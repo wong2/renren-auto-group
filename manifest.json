@@ -1,0 +1,24 @@
+{
+    "name": "人人好友自动分组器",
+    "version": "1.0.0",
+    "description": "给你的人人网好友自动分组",
+    "manifest_version": 2,
+    "background": {
+        "scripts": ["background.js"]
+    },
+    "content_scripts": [
+        {
+            "matches": ["http://friend.renren.com/myfriendlistx.do"],
+            "js": ["js/inject.js"],
+            "css": ["css/inject.css"],
+            "run_at": "document_end"
+        }
+    ],
+    "icons": {
+        "48": "images/icon.png"
+    },
+    "permissions": [
+        "http://*.renren.com/"
+    ],
+    "web_accessible_resources": ["js/underscore-min.js", "js/auto_group.js"]
+}
