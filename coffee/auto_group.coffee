@@ -8,6 +8,7 @@ AutoGroup =
         @SHARED_FRIEND_URL_TMPL = _.template 'http://friend.renren.com/shareFriends?p=
                     {%22init%22:true,%22uid%22:true,%22uhead%22:false,%22uname%22:false,
                     %22group%22:false,%22net%22:false,%22param%22:{%22guest%22:<%=uid%>}}'
+        @score_cache = {}
 
         @createInitBtn()
 
@@ -48,12 +49,19 @@ AutoGroup =
                     next()
 
         $queue.queue 'ajaxQueue', =>
-            m_alert.hide()
-            callback.call @
+            m_alert.remove()
+            setTimeout =>
+                callback.call @
+            , 500
         $queue.dequeue 'ajaxQueue'
 
     score: (friend1, friend2) ->
-        _.intersection(friend1.sharedFriends, friend2.sharedFriends).length
+        [uid1, uid2] = [friend1.id, friend2.id]
+        if not (uid1 of @score_cache)
+            @score_cache[uid1] = {}
+        if not (uid2 of @score_cache[uid1])
+            @score_cache[uid1][uid2] = _.intersection(friend1.sharedFriends, friend2.sharedFriends).length
+        return @score_cache[uid1][uid2]
 
     avgScore: (friends, friend)->
         if not friends.length
@@ -87,7 +95,8 @@ AutoGroup =
             bestmatches = ([] for i in [0..group_len-1])
             no_group = []
 
-            @friends.forEach (friend) =>
+            @friends.forEach (friend, index) =>
+                m_alert.body.innerHTML = "#{t}: #{index+1}/#{group_len}"
                 avg_scores = ( @avgScore(group, friend) for group in groups )
                 if not _.any(avg_scores)
                     no_group.push friend
@@ -98,7 +107,7 @@ AutoGroup =
                             best = index
                     bestmatches[best].push friend
 
-            if bestmatches == groups
+            if JSON.stringify(bestmatches) == JSON.stringify(groups)
                 break
             else
                 groups = bestmatches
@@ -106,9 +115,10 @@ AutoGroup =
         @over groups
 
     over: (groups) ->
-        console.log groups
-                
-
+        groups.forEach (users, index) =>
+            console.log @group_names[index], ": "
+            users.forEach (user) -> console.log user.name
+            
  
 
 AutoGroup.init()
