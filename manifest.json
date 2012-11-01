@@ -20,5 +20,5 @@
     "permissions": [
         "http://*.renren.com/"
     ],
-    "web_accessible_resources": ["js/underscore-min.js", "js/auto_group.js"]
+    "web_accessible_resources": ["js/underscore-min.js", "js/auto_group.js", "js/calculate.js"]
 }
