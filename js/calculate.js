@@ -23,7 +23,7 @@
       score_cache[uid1] = {};
     }
     if (!(uid2 in score_cache[uid1])) {
-      score_cache[uid1][uid2] = getSameLength(friend1.sharedFriends, friend2.sharedFriends);
+      score_cache[uid1][uid2] = getIntersectionLength(friend1.sharedFriends, friend2.sharedFriends);
     }
     return score_cache[uid1][uid2];
   };

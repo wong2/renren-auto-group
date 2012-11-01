@@ -12,7 +12,7 @@ getScore = (friend1, friend2) ->
     if not (uid1 of score_cache)
         score_cache[uid1] = {}
     if not (uid2 of score_cache[uid1])
-        score_cache[uid1][uid2] = getSameLength friend1.sharedFriends, friend2.sharedFriends
+        score_cache[uid1][uid2] = getIntersectionLength friend1.sharedFriends, friend2.sharedFriends
     return score_cache[uid1][uid2]
 
 # 计算一个人和一组人的分值的平均值
