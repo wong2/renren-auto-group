@@ -74,7 +74,7 @@
       no_group = [];
       friends.forEach(function(friend, index) {
         var avg_scores, best, group;
-        if (index % 50 === 0) {
+        if (index % 80 === 0) {
           self.postMessage({
             type: 'process',
             loop: t + 1,
@@ -90,15 +90,15 @@
           }
           return _results;
         })();
-        if (Math.max(avg_scores) === 0) {
+        best = 0;
+        avg_scores.forEach(function(score, index) {
+          if (score > avg_scores[best]) {
+            return best = index;
+          }
+        });
+        if (avg_scores[best] === 0) {
           return no_group.push(friend);
         } else {
-          best = 0;
-          avg_scores.forEach(function(score, index) {
-            if (score > avg_scores[best]) {
-              return best = index;
-            }
-          });
           return bestmatches[best].push(friend);
         }
       });

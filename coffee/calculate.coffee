@@ -41,22 +41,23 @@ calculate = (groups, friends) ->
         no_group = []
 
         friends.forEach (friend, index) =>
-            if index % 50 == 0
+            if index % 80 == 0
                 self.postMessage
                     type: 'process'
                     loop: t+1
                     process: Math.floor (index+1)/friends_len*100
 
             avg_scores = ( getAvgScore(group, friend) for group in groups )
-            # 全是0的话，就是没有分组啦
-            if Math.max(avg_scores) == 0
+
+            #把它加到分值最高的组里
+            best = 0
+            avg_scores.forEach (score, index) ->
+                if score > avg_scores[best]
+                    best = index
+            # 最大分为0，则不属于任何一组
+            if avg_scores[best] == 0
                 no_group.push friend
             else
-                #把它加到分值最高的组里
-                best = 0
-                avg_scores.forEach (score, index) ->
-                    if score > avg_scores[best]
-                        best = index
                 bestmatches[best].push friend
 
         if JSON.stringify(bestmatches) == JSON.stringify(groups)
