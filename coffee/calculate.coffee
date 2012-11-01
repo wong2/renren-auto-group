@@ -1,9 +1,10 @@
 score_cache = {}
 
-getSameLength = (a, b) ->
+# 获取俩数组交集的长度
+getIntersectionLength = (a, b) ->
     d = {}
-    b.forEach (bb) -> d[bb] = true
-    results = a.filter (aa) -> d[aa]
+    b.forEach (item) -> d[item] = true
+    results = a.filter (item) -> d[item]
     return results.length
 
 getScore = (friend1, friend2) ->
@@ -14,6 +15,7 @@ getScore = (friend1, friend2) ->
         score_cache[uid1][uid2] = getSameLength friend1.sharedFriends, friend2.sharedFriends
     return score_cache[uid1][uid2]
 
+# 计算一个人和一组人的分值的平均值
 getAvgScore = (friends, friend)->
     if not friends.length
         return 0
@@ -27,6 +29,7 @@ calculate = (groups, friends) ->
     [group_len, friends_len] = [groups.length, friends.length]
 
     groups.forEach (group) ->
+        # 如果某组里还没有初始好友，随机一个进去
         if group.length == 0
             random_friend = friends[Math.floor(Math.random()*friends_len)]
             group.push random_friend
@@ -45,7 +48,7 @@ calculate = (groups, friends) ->
                     process: Math.floor (index+1)/friends_len*100
 
             avg_scores = ( getAvgScore(group, friend) for group in groups )
-            # 全是0
+            # 全是0的话，就是没有分组啦
             if Math.max(avg_scores) == 0
                 no_group.push friend
             else
@@ -60,6 +63,7 @@ calculate = (groups, friends) ->
             break
         else
             groups = bestmatches
+
     self.postMessage
         type: 'over'
         groups: groups
