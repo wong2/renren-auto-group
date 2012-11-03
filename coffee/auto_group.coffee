@@ -126,7 +126,7 @@ AutoGroup =
         # 去web worker里计算
         worker_content = document.getElementById('chrome-auto-group-worker-content').textContent
         blob = new Blob([worker_content])
-        worker = new Worker window.URL.createObjectURL blob
+        worker = new Worker (window.webkitURL || window.URL).createObjectURL blob
         worker.onmessage = (e) =>
             data = e.data
             if data.type == 'process'
