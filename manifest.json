@@ -1,6 +1,6 @@
 {
     "name": "人人好友自动分组器",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "给你的人人网好友自动分组",
     "manifest_version": 2,
     "content_scripts": [
